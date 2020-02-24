@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<h2>Upload Image for Translation</h2>
+<form method=post enctype=multipart/form-data>
+<strong>Select image file: </strong>
+  <input type=file name=imgtext>
+</br>
+<strong>Enter email: </strong>
+  <input id=date0 type=text name=date0 value={{date0}}>
+  <input type=submit value=Upload>
+</form>
+{{trans}}
+<!--
+{% for t in trans %}
+<red>{{t}}</red>
+{% endfor %}
+-->
+<hr/>
+
+
+{% endblock %}
