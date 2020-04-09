@@ -29,8 +29,8 @@ RUN pip3 install -r requirements.txt
 COPY . .
 
 COPY lao.traineddata  /usr/share/tesseract-ocr/4.00/tessdata/lao.traineddata
-COPY GoogleTranslateProject-4778da0a83ca.json  /app
-ENV GOOGLE_APPLICATION_CREDENTIALS /app/GoogleTranslateProject-4778da0a83ca.json
+COPY seismic-sweep-270103-1449b95478e7.json  /app
+ENV GOOGLE_APPLICATION_CREDENTIALS /app/seismic-sweep-270103-1449b95478e7.json
 
 #ADD . /app
 WORKDIR /app
