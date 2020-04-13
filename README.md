@@ -2,6 +2,9 @@
 - This web app performs OCR from an uploaded image containing Laotion language script and returns it as English text.
 - Sample images to upload are in `sample-images` folder
 
+#### Prerequisite
+* docker: https://docs.docker.com/get-docker/ 
+
 #### Local Deployment
 To run locally:
 ```docker-compose up --build```
