@@ -1,11 +1,9 @@
 #!/usr/bin/env python
-from pytesseract import pytesseract as pt
+
 from flask import Flask, render_template, url_for, make_response, request, flash, redirect
-from google.cloud import translate_v2 as translate
-import datetime
+import base64
+import util
 import os
-import codecs
-import sys
 import logging
 logging.basicConfig(level=logging.DEBUG)
 
@@ -15,50 +13,36 @@ app = Flask(__name__)
 @app.route('/', methods=['GET', 'POST'])
 def home():
     trans_text = ""
+    ocr_text = ""
+    data_uri=""
+    filename=""
     if request.method == 'POST':
+        # check if image uploaded
+        if 'imgtext' not in request.files:
+            app.logger.error('No image file in request')
+            return 'Fail: Go back, No image file in request'
+
         img_text = request.files['imgtext']
+        filename = img_text.filename
+
+        if img_text.filename == '':
+            app.logger.error('No image uploaded')
+            return 'Fail: Go back, and upload an image file'
+
 
         img_text.save(os.path.join("/app/temp", 'img.jpg'))
-        ocr_text = perform_ocr()
-        trans_text = translate_text(ocr_text)
+        ocr_text = util.perform_ocr()
+        trans_text = util.translate_text(ocr_text)
        # return redirect('/')
-    return render_template("input.html", trans=trans_text)
 
+        data_uri = base64.b64encode(open(os.path.join("/app/temp", 'img.jpg'), 'rb').read()).decode('utf-8')
+        img_tag = '<img src="data:image/png;base64,{0}">'.format(data_uri)
 
-def perform_ocr():
-    pt.run_tesseract('/app/temp/img.jpg', 'file_ocr',  extension=".jpg", lang='lao') #'eng')
-
-    txt = ""
-    with codecs.open("/app/file_ocr.txt",encoding="utf-8") as f:
-        for line in f:
-            txt += line
-
-  #  f = open("/app/file_ocr.txt",'r') 
-  #  logging.debug(f.read())
-  #  print("TEST", flush=True)
-  #  txt = f.read()
-  #  f.close()
-  
-    return txt
-
-
-
-#os.environ["GOOGLE_APPLICATION_CREDENTIALS"]="c:/dev/laolessons/lao-translation-app/GoogleTranslate Project-4778da0a83ca.json"
-#print(os.environ["GOOGLE_APPLICATION_CREDENTIALS"])
-
-def translate_text(text):
-    translate_client = translate.Client()
-
-   # text="ສະບາຍດີ "
-    result = translate_client.translate(
-        text, target_language="en")
-
-   # print(u'Text: {}'.format(result['input']))
-   # print(u'Translation: {}'.format(result['translatedText']))
-    #print(u'Detected source language: {}'.format(
-    #    result['detectedSourceLanguage']))
-
-    return result['translatedText']
+    return render_template("input.html",
+                           file=data_uri,
+                           file_name=filename,
+                           ocr_text=ocr_text,
+                           translated_text=trans_text)
 
 
 if __name__ == "__main__":

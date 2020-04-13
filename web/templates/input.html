@@ -2,22 +2,42 @@
 
 {% block content %}
 
-<h2>Upload Image for Translation</h2>
+<h3>Upload Image Containing Lao Script (i.e. ສະບາຍດີ) for Translation</h3>
 <form method=post enctype=multipart/form-data>
-<strong>Select image file: </strong>
-  <input type=file name=imgtext>
-</br>
-<strong>Enter email: </strong>
-  <input id=date0 type=text name=date0 value={{date0}}>
-  <input type=submit value=Upload>
+  <input type="file" name=imgtext onchange="previewImage(event)">
+  </br>
+  <button type="submit" class="btn btn-primary btn-md">Translate</button>
+  </br>
+  </br>
+  <img style="height:100px;display:none" id="selected-image"/>
 </form>
-{{trans}}
-<!--
-{% for t in trans %}
-<red>{{t}}</red>
-{% endfor %}
--->
+
 <hr/>
 
+<label>Extracted Text</label>
+</br>
+{{ocr_text}}
+</br>
+</br>
+<label>Translated Text</label>
+</br>
+{{translated_text}}
+</br>
+</br>
+<label>Image File</label>
+</br>
+{{file_name}}
+</br>
+<img src="data:image/png;base64,{{ file }}">
+
+<script type="text/javascript">
+
+  var previewImage = function(event) {
+		var preview = document.getElementById('selected-image');
+		preview.src = URL.createObjectURL(event.target.files[0]);
+		preview.style.display = "block";
+  };
+</script>
 
 {% endblock %}
+
