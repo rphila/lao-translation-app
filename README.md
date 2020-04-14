@@ -1,9 +1,14 @@
 # lao-translation-app
 - This web app performs OCR from an uploaded image containing Laotion language script and returns it as English text.
 - Sample images to upload are in `sample-images` folder
+    - NOTE: Image must ONLY contain Lao script (NO English or other language text)
+    - If other languages are contained in the text, please crop it out before uploading to get most accurate translation
 
 #### Prerequisite
 * docker: https://docs.docker.com/get-docker/ 
+* google service account credentials: https://cloud.google.com/docs/authentication/getting-started
+    * (referenced in Dockerfile as "seismic-sweep-270103-1449b95478e7.json")
+
 
 #### Local Deployment
 To run locally:
@@ -42,6 +47,6 @@ docker login
 <enter dockerhub credentials>
 
 docker pull rphila/lao-translation-app:latest
-docker run -p 5000:5000 --rm rphila/lao-translation-app:latest
+docker run -p 80:5000 --rm rphila/lao-translation-app:latest
 ```
 

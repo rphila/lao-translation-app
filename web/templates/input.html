@@ -3,12 +3,18 @@
 {% block content %}
 
 <h3>Upload Image Containing Lao Script (i.e. ສະບາຍດີ) for Translation</h3>
+<strong><font color=red>Note:</font></strong> Image must ONLY contain Lao script (No English or other language text)
+</br>
+<red>If other languages are contained in the text, please crop it out for most accurate translation</red>
+</br>
+</br>
 <form method=post enctype=multipart/form-data>
   <input type="file" name=imgtext onchange="previewImage(event)">
   </br>
-  <button type="submit" class="btn btn-primary btn-md">Translate</button>
+  <button type="submit" class="btn btn-primary btn-md">TRANSLATE</button>
   </br>
   </br>
+  <i>If preview below looks OK, click TRANSLATE button above</i>
   <img style="height:100px;display:none" id="selected-image"/>
 </form>
 
@@ -28,7 +34,7 @@
 </br>
 {{file_name}}
 </br>
-<img src="data:image/png;base64,{{ file }}">
+<img style="height:240px;" src="data:image/png;base64,{{ file }}">
 
 <script type="text/javascript">
 
